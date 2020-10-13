@@ -100,7 +100,7 @@ def error(weights, bias, inputs, targets):
 
     return (np.square(np.subtract(targets, z_xn))).mean()
         
-def final_prediction(weights, bias, testing_data, testing_labels):
+def final_prediction(weights, bias, testing_data, testing_labels, classes):
     pos = 0
     for i in range(len(testing_data)):
         prediction = predict(weights, bias, testing_data[i])
@@ -120,7 +120,7 @@ def final_prediction(weights, bias, testing_data, testing_labels):
         else: 
             acc = 0
         pos = pos + acc
-        print('ID=%5d, predicted=%3d, true=%3d, accuracy=%4.2f'% (i + 1, np.argmax(prediction) + 1, np.argmax(testing_labels[i]) + 1, acc))
+        print('ID=%5d, predicted=%3d, true=%3d, accuracy=%4.2f'% (i + 1, sorted(classes)[np.argmax(prediction)], sorted(classes)[np.argmax(testing_labels[i])], acc))
     
     print('\nclassification accuracy=%6.4f\n' % (float(pos) / len(testing_data)))
 
@@ -248,7 +248,7 @@ def neural_network():
                         weights[l][i][j] = weights[l][i][j] - learning_rate * sigma[l][i] * z[l-1][j]  
         learning_rate = learning_rate * 0.98
 
-    final_prediction(weights, bias, testing_data, testing_labels)
+    final_prediction(weights, bias, testing_data, testing_labels, classes)
     
 
 neural_network()
