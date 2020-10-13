@@ -163,15 +163,13 @@ def neural_network():
         training_labels.append([float(line[-1])])
     
     index = 0
+    cnt = 0
 
-    for val in classes:
-        build = []
-        for i in range(len(classes)):
-            if i == int(val) - 1:
-                build.append(1)
-            else:
-                build.append(0)
-        classes[val] = build
+    for i in sorted(classes.keys()):
+        build = np.zeros(len(classes))
+        build[cnt] = 1
+        classes[i] = build
+        cnt = cnt + 1
 
     for line in testing_lines:
         line = line.split()
@@ -216,17 +214,11 @@ def neural_network():
     for _ in range(rounds):
         for n in range(len(training_data)):
             z = list(range(layers))
-            z[0] = list(range(len(training_data[n])))
-
-            for i in range(len(training_data[0])):
-                z[0][i] = training_data[n][i]
+            z[0] = training_data[n]
 
             a = list(range(layers))
 
             a[0] = list(range(len(training_data[n])))
-
-            for i in range(len(training_data[0])):
-                a[0][i] = training_data[0][i]
 
             for l in range(1, layers):
                 a[l] = list(range(len(weights[l])))
